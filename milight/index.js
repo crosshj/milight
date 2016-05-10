@@ -1,79 +1,28 @@
-var repl = require("repl");
-// http://derickbailey.com/2014/07/02/build-your-own-app-specific-repl-for-your-nodejs-app/
+var milight = require('./milight');
 
-//load this wifi box class
-var WifiBoxModule = require('./wifibox.js');
+var Hapi = require('hapi');
 
-var cmd = require('./commands.js');
-var rl = require('readline');
+// Create a server with a host and port
+const server = new Hapi.Server();
+server.connection({ 
+    host: '0.0.0.0', 
+    port: parseInt(process.env.PORT, 10) || 3000
+});
 
+server.route({
+  method: 'GET'
+, path: '/milights/{switch}'
+, handler: function(req, reply) {
+    var lightSwitch = req.params.switch || 'off';
+    milight[lightSwitch]();
+    reply('ok');
+  }
+});
 
-var delay = 150;
-//create instance with wifi box ip and port
-var box = new WifiBoxModule("192.168.1.56", 8899);
-
-function pad(num, size) {
-	var s = num+"";
-	while (s.length < size) s = "0" + s;
-	return s;
-}
-
-var color = 0;
-function changeColor(){
-	if(color>=255) {
-		clearInterval(timer);
-		box.client.close();
-		return;
-		//color = -1;
-	}
-	color++;
-	box.command(cmd.rgb.hue(color),function(err,bytes){ process.stdout.write(pad(color,3)); rl.moveCursor(process.stdout, -3, 0)});
-}
-
-function setColor(color){
-	box.command(cmd.rgb.hue(color));
-}
-
-function off(){
-	box.command(cmd.rgb.off());
-}
-
-function on(){
-	box.command(cmd.rgb.on());
-}
-
-function whiteMode(callback){
-	var todo = [
-		cmd.rgb.effectSpeedDown()
-	];
-
-	var todoDelay = 50;
-	todo.forEach(function(command, index, all){
-		if (index === all.length){
-			setTimeout(function(){
-				callback();
-			}, (index+1)*todoDelay);
-		}
-		setTimeout(function(){
-			box.command(command)
-		}, index*todoDelay);
-	});
-}
-
-function cycleColorsOnce(){
-	var timer = setInterval(changeColor,delay);
-}
-
-//whiteMode(function(){ box.client.close();})
-
-var replContext = repl.start({ prompt: "milight >" }).context;
-
-replContext.changeColor = setColor;
-replContext.whiteMode = whiteMode;
-replContext.on = on;
-replContext.off = off;
-replContext.exit = function(){
-	process.exit();
-};
-
-
+// Start the server
+server.start((err) => {
+    if (err) {
+        throw err;
+    }
+    console.log('Server running at:', server.info.uri);
+});
