@@ -13,4 +13,10 @@ Instructions:
   - edit node milight/milight.js to reflect your network, npm install, then npm start
   - tell Alexa/Echo to discover new devices
   - tell Alexa/Echo to tunr on/off your milight(s)
+
+Todo:
+  - convert python to javascript (maybe)
+  - install as a service, crontab addition, or something similar
+  - colors (big wish, don't bet on it)
+
   
