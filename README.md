@@ -10,7 +10,7 @@ Requires:
 
 Instructions:
   - edit list in fauxmo/fauxmo.py to reflect your network, then start using python
-  - edit node config in milight/index.js, npm install, then npm start
+  - edit node milight/milight.js to reflect your network, npm install, then npm start
   - tell Alexa/Echo to discover new devices
   - tell Alexa/Echo to tunr on/off your milight(s)
   
