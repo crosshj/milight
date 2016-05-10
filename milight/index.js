@@ -14,6 +14,7 @@ server.route({
 , path: '/milights/{switch}'
 , handler: function(req, reply) {
     var lightSwitch = req.params.switch || 'off';
+    console.log(req.params);
     milight[lightSwitch]();
     reply('ok');
   }
