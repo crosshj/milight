@@ -14,7 +14,7 @@ function off(zone) {
 }
 
 function on(zone) {
-  if (zone || zone === 0)
+  if (zone || zone === 0) {
     masterBox.command(cmd.rgbw.on(zone));
   } else {
     box.command(cmd.rgb.on());
