@@ -6,7 +6,7 @@ var box = new WifiBoxModule("192.168.1.56", 8899);
 var masterBox = new WifiBoxModule("192.168.1.4", 8899);
 
 function off(zone) {
-  if (zone) {
+  if (zone || zone === 0) {
     masterBox.command(cmd.rgbw.off(zone));
   } else {
     box.command(cmd.rgb.off());
@@ -14,11 +14,11 @@ function off(zone) {
 }
 
 function on(zone) {
-    if (zone) {
-      masterBox.command(cmd.rgbw.on(zone));
-    } else {
-      box.command(cmd.rgb.on());
-    }
+  if (zone || zone === 0)
+    masterBox.command(cmd.rgbw.on(zone));
+  } else {
+    box.command(cmd.rgb.on());
+  }
 }
 
 module.exports = {
