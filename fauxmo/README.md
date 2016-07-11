@@ -1,6 +1,8 @@
 # fauxmo
 **Emulated Belkin WeMo devices that work with the Amazon Echo**
 
+forked/copied from https://github.com/makermusings/fauxmo, will probably remove this dependency in the future
+
 Visit [this Maker Musings article](http://www.makermusings.com/2015/07/13/amazon-echo-and-home-automation/) to learn more about using this code to integrate
 the Amazon Echo with your own home automation.
 
