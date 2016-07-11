@@ -37,18 +37,15 @@ masterBServer.route({
   method: 'GET',
   path: '/milights/{zone}/{switch}',
   handler: function(req, reply) {
-    var lightSwitch = "zone"
-      + (Number(req.params.zone) === 0
-          ? "All"
-          : req.params.zone)
-      + (req.params.switch || 'off');
     console.log("Master Bedroom Server - ", req.params);
-    if ([0,1,2,3,4].includes(Number(req.params.zone))){
-      milight[lightSwitch]();
-      reply('ok');
-    } else {
-      reply('error: zone must be 0,1,2,3,4')
+    if (![0,1,2,3,4].includes(Number(req.params.zone))){
+      reply('error: zone must be 0,1,2,3,4');
+      return;
     }
+    const lightZone = Number(req.params.zone);
+    var lightSwitch = (req.params.switch || 'off');
+    milight[lightSwitch](lightZone);
+    reply('ok');
   }
 });
 

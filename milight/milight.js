@@ -23,15 +23,5 @@ function on(zone) {
 
 module.exports = {
   on: on,
-  off: off,
-  zoneAllon: on.bind(null, 0),
-  zoneAlloff: off.bind(null, 0),
-  zone1on: on.bind(null, 1),
-  zone1off: off.bind(null, 1),
-  zone2on: on.bind(null, 2),
-  zone2off: off.bind(null, 2),
-  zone3on: on.bind(null, 3),
-  zone3off: off.bind(null, 3),
-  zone4on: on.bind(null, 4),
-  zone4off: off.bind(null, 4)
+  off: off
 }
