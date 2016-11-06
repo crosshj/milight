@@ -65,7 +65,7 @@ ColorRgbwCmd.prototype.hue =  function(decimal)
 ColorRgbwCmd.prototype.whiteMode = 	function(){  	return [0xC2,00,0x55] };
 /* Brightness range 1-100 [targets last ON() activated bulb(s)]*/
 ColorRgbwCmd.prototype.brightness = 	function(percent)
-{ 	brightnessIndex = Math.max( 0,(Math.ceil(percent/100*19))-1 ); //19 steps
+{ 	brightnessIndex = Math.max( 0,(Math.ceil(percent/100*20))-1 ); //19 steps
 	return [ 0x4E 
 		 ,[ 0x02,0x03,0x04,0x05,0x08,0x09
 		   ,0x0A,0x0B,0x0D,0x0E,0x0F,0x10,0x11

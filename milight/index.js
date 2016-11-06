@@ -2,6 +2,32 @@ var milight = require('./milight');
 
 var Hapi = require('hapi');
 
+function getAction(parameter){
+  var param = JSON.parse(JSON.stringify(parameter));
+  var isBrightness = isFinite(param);
+
+  var action = 'off';
+  if (param && param !== 0){
+    action = param;
+  }
+  if (isBrightness){
+    action = 'brightness';
+    if (param <= 0){
+      action ='off';
+      isBrightness = false;
+    }
+    if (param > 255){
+      param = 255;
+    }
+  }
+
+  return {
+    action: action,
+    level: isBrightness ? param : undefined
+  };
+}
+
+
 // Create a server with a host and port
 const server = new Hapi.Server();
 server.connection({
@@ -13,9 +39,9 @@ server.route({
   method: 'GET',
   path: '/milights/{switch}',
   handler: function(req, reply) {
-    var lightSwitch = req.params.switch || 'off';
+    var lightSwitch = getAction(req.params.switch);
     console.log("Den Server - ",req.params);
-    milight[lightSwitch]();
+    milight[lightSwitch.action](lightSwitch.level);
     reply('ok');
   }
 });
@@ -43,8 +69,8 @@ masterBServer.route({
       return;
     }
     const lightZone = Number(req.params.zone);
-    var lightSwitch = (req.params.switch || 'off');
-    milight[lightSwitch](lightZone);
+    var lightSwitch = getAction(req.params.switch);
+    milight[lightSwitch.action](lightZone, lightSwitch.level);
     reply('ok');
   }
 });
