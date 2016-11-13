@@ -37,11 +37,16 @@ server.connection({
 
 server.route({
   method: 'GET',
-  path: '/milights/{switch}',
+  path: '/milights/{zone}/{switch}',
   handler: function(req, reply) {
+    console.log("Den Server - ", req.params);
+    if (![0,1,2,3,4].includes(Number(req.params.zone))){
+      reply('error: zone must be 0,1,2,3,4');
+      return;
+    }
+    const lightZone = Number(req.params.zone);
     var lightSwitch = getAction(req.params.switch);
-    console.log("Den Server - ",req.params);
-    milight[lightSwitch.action](lightSwitch.level);
+    milight[lightSwitch.action]('den', lightZone, lightSwitch.level);
     reply('ok');
   }
 });
@@ -70,7 +75,7 @@ masterBServer.route({
     }
     const lightZone = Number(req.params.zone);
     var lightSwitch = getAction(req.params.switch);
-    milight[lightSwitch.action](lightZone, lightSwitch.level);
+    milight[lightSwitch.action]('master', lightZone, lightSwitch.level);
     reply('ok');
   }
 });
